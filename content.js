@@ -4,7 +4,7 @@ function replaceAds() {
   const adSelectors = [
     'div[class*="ad"]',
     'iframe[src*="ads"]',
-    "img"[(src *= "ad")],
+    "img[src*='ad']",
     "ins.adsbygoogle",
   ];
 
