@@ -3,7 +3,7 @@
   "name": "AdFriend",
   "version": "1.0",
   "description": "Replace boring ads with positive and helpful content!",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js"
@@ -11,9 +11,9 @@
   "action": {
     //"default_popup": "popup.html",
     "default_icon": {
-      "500": "icons/adicon16.png",
-      "500": "icons/adicon48.png",
-      "500": "icons/adicon128.png"
+      "16": "icons/AdFriend16.png",
+      "48": "icons/AdFriend48.png",
+      "128": "icons/AdFriend128.png"
     }
   },
   "content_scripts": [
