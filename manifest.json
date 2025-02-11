@@ -9,11 +9,11 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html",
+    //"default_popup": "popup.html",
     "default_icon": {
-      "16": "icons/adicon16.png",
-      "48": "icons/adicon48.png",
-      "128": "icons/adicon128.png"
+      "500": "icons/adicon16.png",
+      "500": "icons/adicon48.png",
+      "500": "icons/adicon128.png"
     }
   },
   "content_scripts": [
