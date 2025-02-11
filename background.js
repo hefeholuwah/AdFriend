@@ -47,7 +47,7 @@ function scheduleDailyReminder() {
   setTimeout(() => {
     chrome.notifications.create({
       type: "basic",
-      iconUrl: "icons/icon128.png",
+      iconUrl: "icons/AdFriend128.png",
       title: "AdFriend Reminder",
       message: "Have you taken a break today? 🌟",
     });
