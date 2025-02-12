@@ -1,0 +1,13 @@
+if (chrome.storage && chrome.storage.sync) {
+    chrome.storage.sync.get(["selectedType", "darkMode"], (data) => {
+        if (data && data.selectedType) {
+            contentTypeSelector.value = data.selectedType;
+        }
+        if (data && data.darkMode) {
+            document.body.classList.add("dark-mode");
+            if (darkModeToggle) darkModeToggle.checked = true;
+        }
+    });
+} else {
+    console.error("chrome.storage.sync is not available.");
+}

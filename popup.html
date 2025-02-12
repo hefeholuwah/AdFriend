@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdFriend - Settings</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 270px;
+            text-align: center;
+            background: linear-gradient(135deg, #87CEFA, #4682B4);
+            transition: background 0.3s ease-in-out;
+        }
+
+        .container {
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            margin: 15px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        h2 {
+            margin: 0 0 15px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            font-size: 15px;
+            transition: 0.3s ease-in-out;
+        }
+
+        select {
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+
+        button {
+            background: #007BFF;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 42px;
+            height: 22px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007BFF;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background: #1E1E1E !important;
+            color: white;
+        }
+
+        .dark-mode .container {
+            background: #2C2C2C;
+            color: white;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode select {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        .dark-mode button {
+            background: #ff8c00;
+        }
+
+        .dark-mode button:hover {
+            background: #cc7000;
+        }
+
+        .dark-mode .toggle-label {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>AdFriend Settings</h2>
+
+        <label for="contentType">Choose Content Type:</label>
+        <select id="contentType">
+            <option value="quotes">Motivational Quotes</option>
+            <option value="reminders">Activity Reminders</option>
+        </select>
+
+        <button id="changeMotivationBtn">Change Motivation</button>
+
+        <div class="toggle-container">
+            <span class="toggle-label">Dark Mode</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
