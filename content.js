@@ -6,6 +6,8 @@ function replaceAds() {
     'iframe[src*="ads"]',
     "img[src*='ad']",
     "ins.adsbygoogle",
+    'div[class*="sponsored"]',
+    'div[class*="banner"]',
   ];
 
   adSelectors.forEach((selector) => {
@@ -37,5 +39,12 @@ function getRandomQuote() {
   return quotes[Math.floor(Math.random() * quotes.length)];
 }
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "enable") {
+    replaceAds();
+  } else if (message.action === "disable") {
+    location.reload(); // if the extension is not enabled, bring back the ads
+  }
+});
 // Run the function to replace ads
 replaceAds();
