@@ -3,19 +3,20 @@
   "name": "AdFriend",
   "version": "1.0",
   "description": "Replace boring ads with positive and helpful content!",
-  "permissions": ["activeTab", "scripting", "storage"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": ["activeTab", "scripting", "alarms", "notifications", "tabs", "storage"],
+  "host_permissions": ["https://zenquotes.io/api/random", "<all_urls>"],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/AdFriend16.png",
-      "48": "icons/AdFriend48.png",
-      "128": "icons/AdFriend128.png"
-    }
+    "default_icon": "icons/Adfriend48.png"
   },
+ "icons": {
+  "16": "icons/Adfriend16.png",
+  "48": "icons/Adfriend48.png",
+  "128": "icons/Adfriend128.png"
+},
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
