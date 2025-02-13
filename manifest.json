@@ -12,15 +12,22 @@
     "default_popup": "popup.html",
     "default_icon": "icons/Adfriend48.png"
   },
- "icons": {
-  "16": "icons/Adfriend16.png",
-  "48": "icons/Adfriend48.png",
-  "128": "icons/Adfriend128.png"
-},
+  "icons": {
+    "16": "icons/Adfriend16.png",
+    "48": "icons/Adfriend48.png",
+    "128": "icons/Adfriend128.png"
+  },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": ["*://*/*"],
+      "js": ["content.js"],
+      "exclude_matches": [
+        "*://docs.google.com/*",
+        "*://drive.google.com/*",
+        "*://mail.google.com/*",
+        "*://www.wikipedia.org/*"
+      ],
+      "run_at": "document_idle"
     }
   ]
 }

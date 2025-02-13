@@ -12,7 +12,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "replaceAds") {
     console.log("Received request to replace ads.");
-    
+
     // Send message to the active tab to replace ads
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0 && tabs[0].id) {
@@ -27,6 +27,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse(data);
     });
     return true; // Ensures sendResponse works asynchronously
+  }
+
+  // ✅ Detect when no ads were found and notify the user
+  if (message.action === "noAdsFound") {
+    console.log("No ads found on this page.");
+    chrome.notifications.create("no-ads-notification", {
+      type: "basic",
+      iconUrl: chrome.runtime.getURL("icons/Adfriend128.png"),
+      title: "No Ads Found 🎉",
+      message: "This page is already clean! Enjoy an ad-free experience. 😊",
+    });
   }
 });
 
@@ -55,9 +66,9 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "dailyReminder") {
     chrome.notifications.create("daily-reminder", {
       type: "basic",
-      iconUrl: chrome.runtime.getURL("icons/Adfriend128.png"), // ✅ FIXED
+      iconUrl: chrome.runtime.getURL("icons/Adfriend128.png"),
       title: "AdFriend Reminder",
       message: "Have you taken a break today? 🌟",
     });
   }
-}); 
+});
