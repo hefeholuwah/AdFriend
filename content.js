@@ -1,30 +1,39 @@
 function replaceAds() {
+    if (
+        location.hostname.includes("developer.chrome.com") ||
+        location.hostname.includes("chat.openai.com") ||
+        location.hostname.includes("deepseek.com")
+    ) {
+        console.log("Skipping ad replacement on this site.");
+        return;
+    }
+
     const adSelectors = [
-        'div[class*="ad"]',
+        'div[class^="ad-"]',
+        'div[class$="-ad"]',
         'iframe[src*="ads"]',
         "img[src*='ad']",
         "ins.adsbygoogle",
+        "div[id^='ad-']",
         "div[id*='google_ads']",
         "[aria-label*='sponsored']", // Facebook & YouTube
-        "[data-testid*='placement']" // Twitter/X ads
+        "[data-testid*='placement']", // Twitter/X ads
     ];
 
     let adsFound = false;
 
     adSelectors.forEach((selector) => {
         document.querySelectorAll(selector).forEach((ad) => {
-            // ❌ Ignore text fields & non-ad images
             if (ad.closest("input, textarea, [contenteditable='true']")) return;
             if (ad.tagName.toLowerCase() === "img" && !ad.src.includes("ads")) return;
+            if (ad.innerText.length > 50) return; // Ignore large non-ad sections
 
             adsFound = true;
 
             if (ad.tagName.toLowerCase() === "iframe" || ad.tagName.toLowerCase() === "img") {
                 ad.remove();
             } else {
-                ad.innerHTML = `<div class="ad-widget">
-                    <p style="font-weight:bold; color:#333;">${getRandomQuote()}</p>
-                </div>`;
+                ad.innerHTML = `<div class="ad-widget">${getRandomQuote()}</div>`;
                 ad.style.cssText = `
                     background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
                     color: white;
@@ -40,7 +49,6 @@ function replaceAds() {
 
     if (!adsFound) {
         console.log("No ads found.");
-        chrome.runtime.sendMessage({ action: "noAdsFound" });
     } else {
         console.log("Ads replaced successfully!");
     }
@@ -70,7 +78,7 @@ replaceAds();
 let adCheckTimeout;
 function checkForAdsEfficiently() {
     clearTimeout(adCheckTimeout);
-    adCheckTimeout = setTimeout(replaceAds, 2000); // Delay execution after user stops interacting
+    adCheckTimeout = setTimeout(replaceAds, 2000);
 }
 
 // Listen for user interactions to detect dynamically loaded ads

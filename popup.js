@@ -1,86 +1,63 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const contentTypeSelect = document.getElementById("contentType");
     const changeMotivationBtn = document.getElementById("changeMotivationBtn");
-    const contentTypeSelector = document.getElementById("contentType");
     const darkModeToggle = document.getElementById("darkModeToggle");
 
     // Load saved preferences
-    chrome.storage.sync.get(["selectedType", "darkMode"], (data) => {
-        if (data.selectedType) {
-            contentTypeSelector.value = data.selectedType;
+    chrome.storage.sync.get(["contentType", "darkMode"], (data) => {
+        if (data.contentType) {
+            contentTypeSelect.value = data.contentType;
         }
-
-        // Apply Dark Mode setting
-        document.body.classList.toggle("dark-mode", data.darkMode);
-        if (darkModeToggle) darkModeToggle.checked = !!data.darkMode;
+        if (data.darkMode) {
+            document.body.classList.add("dark-mode");
+            darkModeToggle.checked = true;
+        }
     });
 
-    // Fetch Quote Function with Error Handling
-    async function fetchQuote() {
-        try {
-            const response = await fetch("https://zenquotes.io/api/random");
-            if (!response.ok) throw new Error("API request failed");
-            const data = await response.json();
-            return data[0].q + " - " + data[0].a;
-        } catch (error) {
-            console.error("Failed to fetch quote:", error);
-            return "Stay positive and keep going! 🌟";
-        }
-    }
+    // Save content type preference
+    contentTypeSelect.addEventListener("change", () => {
+        chrome.storage.sync.set({ contentType: contentTypeSelect.value });
+    });
 
-    // Function to Get Random Content Based on Selection
-    function getRandomContent(type) {
-        const reminders = [
-            "Have you done your burpees today? 🏋️‍♂️",
-            "Take a deep breath and stretch! 🧘‍♂️",
-            "Time to hydrate! Drink some water. 💧",
-            "Smile! It makes everything better. 😊",
-            "Step away from the screen for a moment! 🚶‍♂️"
-        ];
-
-        return type === "reminders"
-            ? Promise.resolve(reminders[Math.floor(Math.random() * reminders.length)])
-            : fetchQuote();
-    }
-
-    // Function to Update Ads on Webpage
-    function updateAds(newContent) {
-        document.querySelectorAll(".ad-widget p").forEach((ad) => {
-            ad.textContent = newContent;
-        });
-    }
-
-    // Change Motivation Button Event Listener
-    changeMotivationBtn.addEventListener("click", async () => {
-        const selectedType = contentTypeSelector.value;
-        const newContent = await getRandomContent(selectedType);
-
-        // Save selected type only if it has changed
-        chrome.storage.sync.get(["selectedType"], (data) => {
-            if (data.selectedType !== selectedType) {
-                chrome.storage.sync.set({ selectedType });
-            }
-        });
-
-        // Update Ads on Active Tab
+    // Change motivation manually
+    changeMotivationBtn.addEventListener("click", () => {
+        alert("Motivational content will be refreshed!");
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs.length === 0 || !tabs[0].id) {
-                console.warn("No active tab found.");
-                return;
-            }
             chrome.scripting.executeScript({
                 target: { tabId: tabs[0].id },
-                func: updateAds,
-                args: [newContent]
+                function: replaceAds,
             });
         });
     });
 
-    // Dark Mode Toggle Event Listener
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener("change", () => {
-            const isDarkMode = darkModeToggle.checked;
-            document.body.classList.toggle("dark-mode", isDarkMode);
-            chrome.storage.sync.set({ darkMode: isDarkMode });
+    // Dark mode toggle
+    darkModeToggle.addEventListener("change", () => {
+        if (darkModeToggle.checked) {
+            document.body.classList.add("dark-mode");
+            chrome.storage.sync.set({ darkMode: true });
+        } else {
+            document.body.classList.remove("dark-mode");
+            chrome.storage.sync.set({ darkMode: false });
+        }
+    });
+
+    // Function to refresh ads with motivational content
+    function replaceAds() {
+        const quotes = [
+            "You can't start the next chapter of your life if you keep re-reading the last.",
+            "The best way to predict the future is to create it.",
+            "You got this! 💪",
+            "Take a deep breath and smile. 😊",
+            "Small steps lead to big results. 🚀",
+            "Stay positive and keep going! 🌟",
+            "Believe in yourself and all that you are. 💖",
+            "Every day is a fresh start. 🌅",
+            "Your only limit is your mind. 🚀",
+            "Don't stop until you're proud. 🌟"
+        ];
+        
+        document.querySelectorAll(".ad-widget").forEach(ad => {
+            ad.innerText = quotes[Math.floor(Math.random() * quotes.length)];
         });
     }
 });

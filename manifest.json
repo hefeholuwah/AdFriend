@@ -25,7 +25,26 @@
         "*://docs.google.com/*",
         "*://drive.google.com/*",
         "*://mail.google.com/*",
-        "*://www.wikipedia.org/*"
+        "*://www.wikipedia.org/*",
+        "*://github.com/*",
+        "*://www.facebook.com/*",
+        "*://twitter.com/*",
+        "*://www.instagram.com/*",
+        "*://www.linkedin.com/*",
+        "*://www.reddit.com/*",
+        "*://www.tiktok.com/*",
+        "*://www.youtube.com/*",
+        "*://www.netflix.com/*",
+        "*://www.twitch.tv/*",
+        "*://open.spotify.com/*",
+        "*://www.w3schools.com/*",
+        "*://developer.mozilla.org/*",
+        "*://www.khanacademy.org/*",
+        "*://onedrive.live.com/*",
+        "*://dropbox.com/*",
+        "*://calendar.google.com/*",
+        "*://notion.so/*",
+        "*://www.canva.com/*"
       ],
       "run_at": "document_idle"
     }
