@@ -39,12 +39,41 @@ function getRandomQuote() {
   return quotes[Math.floor(Math.random() * quotes.length)];
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "enable") {
-    replaceAds();
-  } else if (message.action === "disable") {
-    location.reload(); // if the extension is not enabled, bring back the ads
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("toggle");
+
+  // Get current state from Chrome storage
+  chrome.storage.sync.get(["adFriendEnabled"], (result) => {
+    toggle.checked = result.adFriendEnabled ?? true; // Default to on
+  });
+
+  // When toggle changes, update Chrome storage
+  toggle.addEventListener("change", () => {
+    chrome.storage.sync.set({ adFriendEnabled: toggle.checked });
+
+    // Send a message to content.js to enable/disable ad replacement
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length === 0) {
+        console.error("No active tab found");
+        return;
+      }
+
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        {
+          action: toggle.checked ? "enable" : "disable",
+        },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              "Error sending message:",
+              chrome.runtime.lastError.message
+            );
+          } else {
+            console.log("Response from content script:", response);
+          }
+        }
+      );
+    });
+  });
 });
-// Run the function to replace ads
-replaceAds();

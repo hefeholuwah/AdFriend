@@ -32,7 +32,7 @@
         right: 0;
         bottom: 0;
         background-color: #ccc;
-        transition: 0.4s;
+        transition: background-color 0.4s, transform 0.4s;
         border-radius: 25px;
       }
       .slider:before {
@@ -43,7 +43,7 @@
         left: 3px;
         bottom: 3px;
         background-color: white;
-        transition: 0.4s;
+        transition: transform 0.4s;
         border-radius: 50%;
       }
       input:checked + .slider {
@@ -61,7 +61,6 @@
       <input type="checkbox" id="toggle" />
       <span class="slider"></span>
     </label>
-
     <script src="popup.js"></script>
   </body>
 </html>
