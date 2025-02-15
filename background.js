@@ -1,19 +1,25 @@
+// background.js
+
 // Initialize extension settings on install
 chrome.runtime.onInstalled.addListener(() => {
   console.log("AdFriend installed! 🎉");
-
-  // Set default settings in chrome.storage.sync
-  chrome.storage.sync.set({ adReplacementEnabled: true }, () => {
-    console.log("Default settings saved.");
-  });
+  chrome.storage.sync.set(
+    {
+      adReplacementEnabled: true,
+      contentType: "quotes", // Default content type: 'quotes'
+      darkMode: false,
+    },
+    () => {
+      console.log("Default settings saved.");
+    }
+  );
 });
 
 // Listen for messages from content scripts or popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // Replace ads request from popup or other parts of the extension
   if (message.action === "replaceAds") {
     console.log("Received request to replace ads.");
-
-    // Send message to the active tab to replace ads
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0 && tabs[0].id) {
         chrome.tabs.sendMessage(tabs[0].id, { action: "replaceAds" });
@@ -21,15 +27,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     });
   }
 
+  // Retrieve settings
   if (message.action === "getSettings") {
-    // Retrieve settings from storage and send them back
-    chrome.storage.sync.get(["adReplacementEnabled"], (data) => {
-      sendResponse(data);
-    });
-    return true; // Ensures sendResponse works asynchronously
+    chrome.storage.sync.get(
+      ["adReplacementEnabled", "contentType", "darkMode"],
+      (data) => {
+        sendResponse(data);
+      }
+    );
+    return true; // Ensures asynchronous sendResponse works
   }
 
-  // ✅ Detect when no ads were found and notify the user
+  // Notify user if no ads were found
   if (message.action === "noAdsFound") {
     console.log("No ads found on this page.");
     chrome.notifications.create("no-ads-notification", {
@@ -39,22 +48,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       message: "This page is already clean! Enjoy an ad-free experience. 😊",
     });
   }
-});
 
-// Show popup on every new tab or page load
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === "complete" && tab.url && !tab.url.startsWith("chrome://")) {
-    chrome.scripting.executeScript({
-      target: { tabId: tabId },
-      function: openPopup
-    });
+  // Handle content type updates from the popup (if additional actions are needed)
+  if (message.action === "updateContentType") {
+    console.log("Content type updated to:", message.newType);
+    // Additional logic can be added here if needed
   }
 });
-
-// Function to open the popup
-function openPopup() {
-  chrome.runtime.sendMessage({ action: "openPopup" });
-}
 
 // Schedule a daily reminder using Chrome Alarms
 chrome.alarms.create("dailyReminder", {
@@ -62,6 +62,7 @@ chrome.alarms.create("dailyReminder", {
   periodInMinutes: 24 * 60, // Repeat every 24 hours
 });
 
+// Listen for alarm events
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "dailyReminder") {
     chrome.notifications.create("daily-reminder", {

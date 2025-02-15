@@ -1,10 +1,19 @@
 {
   "manifest_version": 3,
   "name": "AdFriend",
-  "version": "1.0",
-  "description": "Replace boring ads with positive and helpful content!",
-  "permissions": ["activeTab", "scripting", "alarms", "notifications", "tabs", "storage"],
-  "host_permissions": ["https://zenquotes.io/api/random", "<all_urls>"],
+  "version": "1.1",
+  "description": "Replace boring ads with positive and interactive content widgets.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "alarms",
+    "notifications",
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "background.js"
   },
@@ -19,7 +28,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": ["<all_urls>"],
       "js": ["content.js"],
       "exclude_matches": [
         "*://docs.google.com/*",
