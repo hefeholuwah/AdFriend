@@ -1,99 +1,149 @@
 # AdFriend
 
-AdFriend is a Chrome extension that transforms ad slots on web pages into interactive, positive content spaces. Instead of traditional ads, users see motivational quotes, activity reminders, and more—each designed to inspire, engage, and even reward the user!
+AdFriend is a Chrome extension that transforms online advertisements into interactive, inspirational widgets. Instead of distracting ads, users see motivational quotes, activity reminders, and even earn points—helping them stay inspired while browsing and unlocking rewards as they progress.
 
-## Features
+## Features 🚀
 
-- **Ad Replacement:**  
-  - Replaces common ad elements (divs, iframes, images) with interactive content widgets.
-  - Skips ad replacement on select domains (e.g., developer.chrome.com, chat.openai.com).
+- **Ad Replacement & Content Providers:**  
+  - Automatically removes traditional ad elements (divs, iframes, images) and replaces them with inspirational widgets.
+  - Supports multiple content types, including **Motivational Quotes** and **Activity Reminders**, each with its own refresh interval.
 
-- **Content Types System:**  
-  - Supports multiple content types such as **Motivational Quotes** and **Activity Reminders**.
-  - Each content type has its own refresh interval and rendering style.
-
-- **Enhanced Interactivity:**  
-  - Widgets include interactive elements (e.g., clickable quotes, “Complete” buttons for reminders).
-  - Buttons change styling when interacted with (active vs. completed state).
-  - Points are awarded for user interactions.
-
-- **Addiction/Reward System:**  
-  - Award points for actions:  
-    - +5 points for clicking a motivational quote.
-    - +10 points for marking a reminder as complete.
-  - Points are stored in local storage and displayed in the extension popup.
-  - Potential to unlock rewards like new themes, personalized quotes, or levels.
+- **Enhanced Interactivity & Rewards System:**  
+  - **Earn Points:**  
+    - Click on a motivational quote to earn **+5 points**.
+    - Mark a reminder as complete to earn **+10 points**.
+  - Points are stored locally and displayed in the extension popup.
+  - Unlock rewards (new themes, personalized quotes, levels) as you accumulate points.
 
 - **User Progress Tracking:**  
-  - Tracks reminder completion count and user points using `chrome.storage.local`.
-
-- **Settings Sync:**  
-  - Uses `chrome.storage.sync` to save user preferences such as content type and dark mode.
-  - Changes apply immediately and are synchronized across devices.
+  - Tracks reminder completions and user points using Chrome's local storage.
+  - Real-time updates in the popup show your progress and total points.
 
 - **Daily Notifications:**  
-  - If no ads are found on a page, the extension sends a notification:
-    > "This page is already clean! Enjoy an ad-free experience. 😊"
+  - If no ads are found on a page, a notification appears:  
+    *"This page is already clean! Enjoy an ad-free experience. 😊"*
+
+- **Customizable Settings & Sync:**  
+  - Choose between different content types (quotes or reminders), toggle dark mode, and refresh content manually.
+  - Preferences are saved using Chrome's sync storage and update across devices.
+
+## Installation Guide 🎥
+
+### Video Tutorial
+Watch the installation video here:  
+[Installation Video](https://www.canva.com/design/DAGe_JGUcNQ/kWQ3Y13mHq_8-V1vW3wPwA/watch?utm_content=DAGe_JGUcNQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks)
+
+### Steps
+1. Open Google Chrome and navigate to `chrome://extensions/`.
+2. Enable **Developer Mode** (top right corner).
+3. Click on **Load unpacked**.
+4. Select the folder containing the extension files.
+5. AdFriend is now installed and ready to use!
+
+## Usage 📌
+
+- **Ad Replacement:**  
+  - As you browse, AdFriend replaces targeted ad elements with inspiring widgets.
+  
+- **Popup Settings:**  
+  - Click the AdFriend extension icon to access the settings popup.
+  - **Content Type:** Select between "Motivational Quotes" and "Activity Reminders".
+  - **Refresh Content:** Manually trigger a refresh for the active tab.
+  - **Dark Mode:** Toggle dark mode for a more comfortable viewing experience.
+  - **Progress & Points:** View the number of reminders completed and your current points total.
+
+- **Earning Points & Unlocking Rewards:**  
+  - Interact with the widgets to earn points:
+    - **Motivational Quotes:** Click to earn **+5 points**.
+    - **Activity Reminders:** Mark as complete to earn **+10 points**.
+  - Use your points to unlock new rewards like themes, personalized quotes, and more.
 
 ## File Structure
 
 - **manifest.json:**  
-  Defines permissions, content scripts, background service worker, and popup UI.
+  Defines the extension's permissions, content scripts, background service worker, and popup UI.
 
 - **background.js:**  
-  Initializes default settings, handles messaging (e.g., showing notifications when no ads are found), and sets up daily reminders via alarms.
+  Initializes default settings, handles messaging (including notifications when no ads are found), and sets up daily alarms.
 
 - **content.js:**  
-  Injects CSS and replaces ad elements on web pages.  
-  Implements the content providers for motivational quotes and activity reminders.  
-  Includes event listeners for awarding points and updating progress.
+  Replaces ad elements with custom widgets. Implements content providers for quotes and reminders, awards points, and tracks progress.
 
 - **popup.html:**  
-  Provides the extension’s settings UI, allowing users to select the content type, refresh content, toggle dark mode, and view their reminder progress and points.
+  Provides the settings UI where users can change preferences, refresh content, and view their progress and points.
 
 - **popup.js:**  
-  Handles UI interactions in the popup, syncing settings and progress, and updating the displayed user points in real time.
+  Manages UI interactions within the popup, syncing user settings and updating progress and points displays in real time.
 
-## Installation
-
-1. **Clone or Download** the repository.
-2. Open Chrome and navigate to `chrome://extensions`.
-3. Enable **Developer Mode** (toggle in the top-right corner).
-4. Click **Load unpacked** and select the folder containing the extension files.
-5. The AdFriend extension should now appear in your browser toolbar.
-
-## Usage
-
-- **Ad Replacement:**  
-  When browsing, AdFriend automatically replaces targeted ad elements with inspirational widgets.
-  
-- **Popup Settings:**  
-  Click on the extension icon to open the popup.  
-  - **Content Type:** Select between "Motivational Quotes" and "Activity Reminders".
-  - **Refresh Content:** Manually trigger a content refresh on the active tab.
-  - **Dark Mode:** Toggle a dark mode for the popup.
-  - **Progress Display:** View the number of reminders completed and your current points total.
-
-- **Earning Points:**  
-  - Click a motivational quote to earn 5 points.
-  - Click the “Complete” button on a reminder widget to mark it complete and earn 10 points.
-
-## Customization
+## Customization 🔧
 
 - **Content Providers:**  
-  You can extend or modify the content providers in **content.js** to include additional content types or adjust refresh intervals.
+  Easily extend or modify the content types in **content.js** to add new features or adjust refresh intervals.
 
 - **Styling:**  
-  Customize the widget appearance by editing the CSS injected in **content.js** or modifying the styles in **popup.html**.
+  Customize the appearance of the widgets and popup by modifying the CSS in **content.js** and **popup.html**.
 
 - **Rewards System:**  
-  Use the awarded points to unlock new themes, personalized quotes, or additional features. Update the logic in **content.js** and **popup.js** as needed.
+  Adjust point values and reward thresholds in the code to suit your desired experience.
 
-## Contributing
+## Contributing 🤝
 
-Feel free to fork the repository and submit pull requests if you have ideas for additional features or improvements!
+Contributions are welcome! To contribute:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-name`).
+5. Submit a pull request.
 
-## License
+## Chrome Extension Landing Page 🌍
 
-This project is open-source and available under the [MIT License](LICENSE).
+Our landing page is built with **Next.js** and provides an engaging introduction to AdFriend.
+
+### Key Features:
+- **Hero Section:**  
+  Engaging headline with a strong call-to-action.
+- **Key Features Overview:**  
+  Highlights the extension’s benefits with icons and concise descriptions.
+- **Screenshots & Demo:**  
+  Visual walkthrough of the extension in action.
+- **Installation Guide:**  
+  Step-by-step instructions and video tutorial for installation.
+- **FAQs:**  
+  Answers to common questions.
+- **Footer:**  
+  Includes contact details, privacy policy, and social media links.
+
+### Getting Started with the Landing Page:
+1. **Prerequisites:**
+   - Node.js v16+
+   - npm or yarn
+
+2. **Installation:**
+   ```bash
+   # Clone the repository
+   git clone https://github.com/your-repo.git
+
+   # Navigate to the landing page project folder
+   cd your-landing-page
+
+   # Install dependencies
+   npm install
+   # or
+   yarn install
+
+   # Run the development server
+   npm run dev
+   # or
+   yarn dev
+
+
+## License 📝
+
+This project is licensed under the **MIT License**.
+
+## Contact 📬
+
+- **Email:** your-email@example.com  
+- **Twitter:** [@yourhandle](https://twitter.com/yourhandle)  
+- **Privacy Policy:** [View here](your-privacy-policy-link)
 
