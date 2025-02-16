@@ -50,6 +50,18 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
+// Function to award points to the user
+function awardPoints(points) {
+  chrome.storage.local.get({ userPoints: 0 }, (result) => {
+    const newPoints = result.userPoints + points;
+    chrome.storage.local.set({ userPoints: newPoints }, () => {
+      console.log(`Awarded ${points} points! Total now: ${newPoints}`);
+      // Optionally notify the popup or update badge
+      chrome.runtime.sendMessage({ action: "updatePoints", points: newPoints });
+    });
+  });
+}
+
 // Default content type if none is set
 let currentContentType = 'quotes';
 
@@ -59,7 +71,15 @@ const contentProviders = {
     getContent: getRandomQuote,
     refreshInterval: 10000, // Refresh every 10 seconds
     render: function(ad) {
-      ad.innerHTML = `<div class="ad-widget fade-in">${this.getContent()}</div>`;
+      const quote = this.getContent();
+      ad.innerHTML = `<div class="ad-widget fade-in">${quote}</div>`;
+      // Award points when user clicks on the quote widget
+      const widget = ad.querySelector('.ad-widget');
+      if (widget) {
+        widget.addEventListener('click', () => {
+          awardPoints(5); // Award 5 points for clicking a quote
+        });
+      }
     }
   },
   reminders: {
@@ -73,11 +93,12 @@ const contentProviders = {
           <div class="progress-circle"></div>
         </div>
       `;
-      // Attach event listener for completion tracking
+      // Attach event listener for completion tracking on the button
       const completeBtn = ad.querySelector('.mark-complete');
       if (completeBtn) {
         completeBtn.addEventListener('click', () => {
           markReminderCompleted();
+          awardPoints(10); // Award 10 points for completing a reminder
           completeBtn.disabled = true;
           completeBtn.classList.add('completed'); // change styling to completed state
           completeBtn.innerText = 'Completed';
